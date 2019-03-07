@@ -21,8 +21,10 @@
  *****************************************************************************/
 
 define([
+    "./src/MyGuideModelProvider",
     'legacyRegistry'
 ], function (
+    MyGuideModelProvider,
     legacyRegistry
 ) {
 
@@ -30,22 +32,41 @@ define([
         "name": "My Items",
         "description": "Defines a root named My Items",
         "extensions": {
+            "types": [
+                { "key": "mine.cv", "name": "CV", "cssClass": "icon-page", "description": "My CV" },
+                ],
+            "views": [
+                { "key": "mine.cv", "type": "mine.cv", "templateUrl": "templates/cv.html", "editable": false },
+                ],
             "roots": [
                 {
-                    "id": "mine"
+                    "id": "_mine"
                 }
             ],
             "models": [
                 {
-                    "id": "mine",
+                    "id": "_mine",
+                    "priority" : "preferred",
                     "model": {
                         "name": "My Items",
                         "type": "folder",
-                        "composition": [],
+                        "composition": [
+                            "cv",
+                        ],
                         "location": "ROOT"
                     }
                 }
-            ]
+            ],
+           "components": [
+                {
+                    "provides": "modelService",
+                    "type": "provider",
+                    "implementation": MyGuideModelProvider,
+                    "depends": [
+                        "$q"
+                    ]
+                }
+            ],
         }
     });
 });
